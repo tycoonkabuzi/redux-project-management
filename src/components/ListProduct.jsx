@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 import { addComplete } from "../store/manageProjectSlice";
 
 const ListProduct = () => {
@@ -8,7 +8,8 @@ const ListProduct = () => {
   const completedStore = useSelector((state) => state.projects.completed);
   const dispatch = useDispatch();
   const location = useLocation();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(null);
+
   const fewCaracter = (text) => {
     if (text.length >= 10) {
       const shortenedString = text.slice(0, 50);
@@ -20,18 +21,18 @@ const ListProduct = () => {
 
   return (
     <div className="main-list">
-      <p style={{ textAlign: "left" }}>Complete</p>
-
       {location.pathname === "/all" ? (
-        projectStore.map((aProject) => (
-          <div className="main-item" key={aProject.id}>
+        projectStore.map((aProject, index) => (
+          <div
+            className={`main-item  ${checked === index ? "line-through" : ""} `}
+            key={aProject.id}
+          >
             <input
               type="checkbox"
               onChange={(e) => {
-                setChecked(e.target.checked);
+                setChecked(index);
                 dispatch(addComplete(aProject.id));
               }}
-              value={checked}
             />
             <span
               className={
@@ -44,7 +45,8 @@ const ListProduct = () => {
             >
               {aProject.name}
             </span>
-            :{fewCaracter(aProject.description)}... <Link> More</Link>
+            :{fewCaracter(aProject.description)}...{" "}
+            <Link to={`/all/${aProject.id}`}> More</Link>
             <button>Delete</button>
           </div>
         ))
@@ -63,7 +65,8 @@ const ListProduct = () => {
               >
                 {aProject.name}{" "}
               </span>
-              :{fewCaracter(aProject.description)}... <Link> More</Link>
+              :{fewCaracter(aProject.description)}...{" "}
+              <Link to={`/all/${aProject.id}`}> More</Link>
               <button>Delete</button>
             </div>
           ))

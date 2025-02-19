@@ -5,16 +5,18 @@ import "./App.css";
 import Products from "./components/Products";
 import { Routes, Route } from "react-router";
 import ListProduct from "./components/ListProduct";
+import SingleProject from "./components/SingleProject";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Products />}>
-          <Route path="all" element={<ListProduct />} />
+          <Route path="all/" element={<ListProduct />} />
           <Route path="/completed" element={<ListProduct />} />
           <Route path="/pending" element={<ListProduct />} />
         </Route>
+        <Route path="all/:id" element={<SingleProject />} />
       </Routes>
     </>
   );

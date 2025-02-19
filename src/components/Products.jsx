@@ -4,9 +4,7 @@ import Links from "./Links";
 import { useState } from "react";
 
 const Products = () => {
-  const projectStore = useSelector((store) => store.projects);
   const dispatch = useDispatch();
-  const [newProject, setNewProject] = useState();
   const [value, setValue] = useState({});
   const handleAddProject = (e) => {
     e.preventDefault();
