@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router";
-import { addComplete } from "../store/manageProjectSlice";
+import { addComplete, deleteProject } from "../store/manageProjectSlice";
 
 const ListProduct = () => {
   const projectStore = useSelector((state) => state.projects.projects);
@@ -18,7 +18,14 @@ const ListProduct = () => {
       return text;
     }
   };
+  const handleDelete = (id) => {
+    dispatch(deleteProject(id));
+  };
 
+  const getPending = (firstStore, secondStore) => {
+    const pending = firstStore.filter((first) => !secondStore.includes(first));
+    return pending;
+  };
   return (
     <div className="main-list">
       {location.pathname === "/all" ? (
@@ -47,7 +54,7 @@ const ListProduct = () => {
             </span>
             :{fewCaracter(aProject.description)}...{" "}
             <Link to={`/all/${aProject.id}`}> More</Link>
-            <button>Delete</button>
+            <button onClick={() => handleDelete(aProject.id)}>Delete</button>
           </div>
         ))
       ) : location.pathname === "/completed" ? (
@@ -67,14 +74,35 @@ const ListProduct = () => {
               </span>
               :{fewCaracter(aProject.description)}...{" "}
               <Link to={`/all/${aProject.id}`}> More</Link>
-              <button>Delete</button>
+              <button onClick={() => handleDelete(aProject.id)}>Delete</button>
             </div>
           ))
         ) : (
           <p>Empty</p>
         )
       ) : location.pathname === "/pending" ? (
-        <p>Pending</p>
+        getPending(projectStore, completedStore).length !== 0 ? (
+          getPending(projectStore, completedStore).map((aProject) => (
+            <div className="main-item" key={aProject.id}>
+              <span
+                className={
+                  aProject.priority === "high"
+                    ? "high-priority"
+                    : aProject.priority === "medium"
+                    ? "medium-priority"
+                    : "low-priority"
+                }
+              >
+                {aProject.name}{" "}
+              </span>
+              :{fewCaracter(aProject.description)}...{" "}
+              <Link to={`/all/${aProject.id}`}> More</Link>
+              <button onClick={() => handleDelete(aProject.id)}>Delete</button>
+            </div>
+          ))
+        ) : (
+          <p>Empty</p>
+        )
       ) : (
         ""
       )}

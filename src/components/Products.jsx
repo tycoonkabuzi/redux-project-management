@@ -31,6 +31,7 @@ const Products = () => {
           }
           value={value.name}
           placeholder=" Project"
+          required
         />
         <input
           type="text"
@@ -42,6 +43,7 @@ const Products = () => {
             }))
           }
           value={value.description}
+          required
         />
         <label>
           Priority:

@@ -42,7 +42,6 @@ const manageProjectSlice = createSlice({
     ],
 
     completed: [],
-    pending: [],
   },
   reducers: {
     addProject: (state, action) => {
@@ -67,9 +66,20 @@ const manageProjectSlice = createSlice({
 
       state.completed.push(state.projects[index]);
       console.log(state.projects[index]);
+      console.log(state.pending);
+    },
+
+    deleteProject: (state, action) => {
+      const index = state.projects.findIndex(
+        (project) => project.id === action.payload
+      );
+
+      state.projects.splice(index, 1);
+      state.completed.splice(index, 1);
     },
   },
 });
 
-export const { addProject, addComplete } = manageProjectSlice.actions;
+export const { addProject, addComplete, deleteProject } =
+  manageProjectSlice.actions;
 export default manageProjectSlice.reducer;
